@@ -1,1 +1,1 @@
-# MCP2221-Sensors-Studio
+# MCP2221 Sensors Studio
