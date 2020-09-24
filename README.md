@@ -1,6 +1,7 @@
 # MCP2221 Sensors Studio
 
 **Screenshots:**
+
 **MPU9250 Tab:**
 <img width="676" alt="Sensors studio v22_1" src="https://user-images.githubusercontent.com/8460504/94200565-740c2780-fe6f-11ea-89b4-fcb1b612ebd5.png">
 
