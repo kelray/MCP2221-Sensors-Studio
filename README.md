@@ -15,7 +15,7 @@ Note: make sure to compile QMapControl with MingW in order to use the output .li
 I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers for the MCP2221 are mostly derived from them: 
 - MPU9250 library: https://github.com/bolderflight/MPU9250
 - SparkFun MMA8452Q Arduino library: https://github.com/sparkfun/SparkFun_MMA8452Q_Arduino_Library
-- Arduino and MMA8452 sensor example blog post listed here: http://arduinolearning.com/code/arduino-and-mma8452-sensor-example.php
+- Arduino and MMA8452 sensor example: http://arduinolearning.com/code/arduino-and-mma8452-sensor-example.php
 
 If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials can be your starting point:
 - MCP2221 Tutorial - I2C Interfacing made easy: http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
