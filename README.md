@@ -5,9 +5,10 @@ This project is basically a collection of MCP2221 projects, I have created in th
 - MPU9250 9DOF IMU USB Viewer: https://github.com/kelray/USB-9-DOF-IMU-Viewer
 - USB 3D Accelerometer Viewer: https://github.com/kelray/USB-3D-Accelerometer-Viewer
 
-The project requires the following libraries in order to compile and build:
-- Qt framework (version 15.5.0 is the one I used for this project).
+The project requires the following tools and libraries in order to compile and build:
+- Qt framework (version 15.5.0 is the one I used for this project), with MingW C/C++ compiler. Visual Studio can be used as a replacement.
 - QMapControl Qt maps library: https://github.com/kaiwinter/QMapControl
+Note: make sure to compile QMapControl with MingW in order to use the output .lib files with this project, the output .lib  didn't work with this project when compiled with Visual Studio.
 - Microchip MCP2221 library and DLL for Windows OS (included in the project files).
 
 I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers were mostly derived from them: 
