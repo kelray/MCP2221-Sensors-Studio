@@ -21,11 +21,11 @@ If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials ca
 
 **MMA8452Q module (picture from SparkFun):**
 
-![mma8452q](https://user-images.githubusercontent.com/8460504/94381563-aaa3a580-00ee-11eb-9a1f-785db2440a4b.jpg)
-
+<p align="center"> <img width="150" alt="mma8452q" src="https://user-images.githubusercontent.com/8460504/94381563-aaa3a580-00ee-11eb-9a1f-785db2440a4b.jpg">
+  
 **MPU9250 module (picture from Amazon.ca):**
 
-![mpu9250_module](https://user-images.githubusercontent.com/8460504/94381565-abd4d280-00ee-11eb-82c4-b9bc24ea9f3c.jpeg) <.element height="50%" width="50%">
+![mpu9250_module](https://user-images.githubusercontent.com/8460504/94381565-abd4d280-00ee-11eb-82c4-b9bc24ea9f3c.jpeg)
 
 **uBlox Neo-6 GPS module:**
 
