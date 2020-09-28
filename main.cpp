@@ -53,7 +53,6 @@
 #include "GetErrName.h"
 #include "MPU9250.h"
 #include "mcp2221_dll_um.h"
-
 #include "QMapControl/QMapControl.h"
 #include "QMapControl/LayerMapAdapter.h"
 #include "QMapControl/MapAdapterOSM.h"
@@ -87,7 +86,6 @@ unsigned int ADCbuffer[3];
 unsigned char DacVal = 0;
 unsigned int ADCreading = 0;
 unsigned int NegativeFlag = 0;
-
 #define I2cAddr7bit 1
 #define I2cAddr8bit 0
 
