@@ -12,7 +12,7 @@ The project requires the following tools and libraries in order to compile and b
 Note: make sure to compile QMapControl with MingW in order to use the output .lib files with this project, the output .lib  didn't work with this project when compiled with Visual Studio.
 - Microchip MCP2221 library and DLL for Windows OS (included in the project files).
 
-I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers were mostly derived from them: 
+I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers for the MCP2221 are mostly derived from them: 
 - MPU9250 library: https://github.com/bolderflight/MPU9250
 - SparkFun MMA8452Q Arduino library: https://github.com/sparkfun/SparkFun_MMA8452Q_Arduino_Library
 - Arduino and MMA8452 sensor example blog post listed here: http://arduinolearning.com/code/arduino-and-mma8452-sensor-example.php
