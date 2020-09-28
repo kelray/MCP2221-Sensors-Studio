@@ -19,6 +19,15 @@ If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials ca
 - MCP2221 Tutorial - I2C Interfacing made easy: http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
 - MCP2221 Tutorial - USB interfacing made easy: http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
 
+**MMA8452Q module (picture from SparkFun): **
+![mma8452q](https://user-images.githubusercontent.com/8460504/94381563-aaa3a580-00ee-11eb-9a1f-785db2440a4b.jpg)
+
+**MPU9250 module (picture from Amazon.ca): **
+![mpu9250_module](https://user-images.githubusercontent.com/8460504/94381565-abd4d280-00ee-11eb-82c4-b9bc24ea9f3c.jpeg)
+
+**uBlox Neo-6 GPS module:**
+![ublox neo 6 gps](https://user-images.githubusercontent.com/8460504/94381566-ac6d6900-00ee-11eb-8135-9399fac4878d.jpg)
+
 **Screenshots:**
 
 **MPU9250 Tab:**
