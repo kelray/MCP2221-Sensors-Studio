@@ -1,4 +1,23 @@
 # MCP2221 Sensors Studio
+The MCP2221 Sensors studio is a desktop app that interfaces with MCP2221 analog inputs, MMA8452Q 3-Axis accelerometer, MPU9250 9 DOF IMU, and uBlox Neo-6 GPS module. The main purpose of the project is to have an "Easy-to-use technology demonstrator" for educators and hobbyists who want to learn about different motion/location sensors.
+This project is basically a collection of MCP2221 projects, I have created in the past, all combined together, these are the original projects:
+- Qt Geolocator (uBlox Neo-6 GPS interface with MCP2221): : https://github.com/kelray/Qt-Geolocator
+- MPU9250 9DOF IMU USB Viewer: https://github.com/kelray/USB-9-DOF-IMU-Viewer
+- USB 3D Accelerometer Viewer: https://github.com/kelray/USB-3D-Accelerometer-Viewer
+
+The project requires the following libraries in order to compile and build:
+- Qt framework (version 15.5.0 is the one I used for this project).
+- QMapControl Qt maps library: https://github.com/kaiwinter/QMapControl
+- Microchip MCP2221 library and DLL for Windows OS (included in the project files).
+
+I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers were mostly derived from them: 
+- MPU9250 library: https://github.com/bolderflight/MPU9250
+- SparkFun MMA8452Q Arduino library: https://github.com/sparkfun/SparkFun_MMA8452Q_Arduino_Library
+- Arduino and MMA8452 sensor example blog post listed here: http://arduinolearning.com/code/arduino-and-mma8452-sensor-example.php
+
+If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials can be your starting point:
+- MCP2221 Tutorial - I2C Interfacing made easy: http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
+- MCP2221 Tutorial - USB interfacing made easy: http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
 
 **Screenshots:**
 
