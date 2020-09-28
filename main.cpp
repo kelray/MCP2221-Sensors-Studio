@@ -1516,6 +1516,5 @@ int main(int argc, char *argv[])
     QObject::connect(AnalogIn_AN1chkBx, SIGNAL(stateChanged(int)), AnalogIn_CheckBoxSignalMapper, SLOT(map()));
     QObject::connect(AnalogIn_AN2chkBx, SIGNAL(stateChanged(int)), AnalogIn_CheckBoxSignalMapper, SLOT(map()));
     QObject::connect(AnalogIn_SaveTofilechkbx, SIGNAL(stateChanged(int)), AnalogIn_CheckBoxSignalMapper, SLOT(map()));
-
     return a.exec();
 }
