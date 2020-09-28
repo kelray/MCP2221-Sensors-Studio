@@ -8,6 +8,7 @@ This project is basically a collection of MCP2221 projects, I have created in th
 The project requires the following tools and libraries in order to compile and build:
 - Qt framework (version 15.5.0 is the one I used for this project), with MingW C/C++ compiler. Visual Studio can be used as a replacement.
 - QMapControl Qt maps library: https://github.com/kaiwinter/QMapControl
+
 Note: make sure to compile QMapControl with MingW in order to use the output .lib files with this project, the output .lib  didn't work with this project when compiled with Visual Studio.
 - Microchip MCP2221 library and DLL for Windows OS (included in the project files).
 
