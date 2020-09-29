@@ -1,4 +1,4 @@
-# MCP2221 Sensors Studio
+# MCP2221 Sensors Studio (Beta version)
 The MCP2221 Sensors studio is a desktop app that interfaces with MCP2221 analog inputs, MMA8452Q 3-Axis accelerometer, MPU9250 9 DOF IMU, and uBlox Neo-6 GPS module. The main purpose of the project is to have an "Easy-to-use technology demonstrator" for educators and hobbyists who want to learn about different motion/location sensors.
 This project is basically a collection of MCP2221 projects, I have created in the past, all combined together, these are the original projects:
 - Qt Geolocator (uBlox Neo-6 GPS interface with MCP2221): : https://github.com/kelray/Qt-Geolocator
@@ -37,11 +37,11 @@ If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials ca
 
 **MPU9250 Tab:**
 
-<p align="center"> <img width="676" alt="Sensors studio v22_1" src="https://user-images.githubusercontent.com/8460504/94200565-740c2780-fe6f-11ea-89b4-fcb1b612ebd5.png">
+<p align="center"> <img width="676" alt="Sensors Studio_v2_mpu9250 tab" src="https://user-images.githubusercontent.com/8460504/94498974-5cef7180-01b0-11eb-87a5-bccf73e2cecb.png">
 
 **MMA8452 3-axis accelerometer and uBlox Neo-6 GPS Tab:**
 
-<p align="center"> <img width="676" alt="Sensors studio v22_2" src="https://user-images.githubusercontent.com/8460504/94200567-74a4be00-fe6f-11ea-89c7-6aa7bc18cdb2.png">
+<p align="center"> <img width="676" alt="Sensors Studio_v2_mma8452 tab" src="https://user-images.githubusercontent.com/8460504/94498971-5c56db00-01b0-11eb-8888-fe8a7d9421eb.png">
 
 **Analog Inputs Tab:**
 
