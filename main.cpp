@@ -956,29 +956,64 @@ void MainWindow::ActiveTabs(int index)
 {
     if(index == 0)
     {
-        qDebug() << "MPU9250 window is active";
-        MPU9250_timer->start(0);
+        //qDebug() << "MPU9250 window is active";
+        //IMU.begin();
+        MPU9250_timer->start(5);
         MMA8452_timer->stop();
         AnalogIn_timer->stop();
         EnableDigitalIO();
+        MMA8452_seriesX->clear();
+        MMA8452_seriesY->clear();
+        MMA8452_seriesZ->clear();
+
+        AnalogIn_seriesX->append(AnalogIn_numX);
+        AnalogIn_seriesY->append(AnalogIn_numY);
+        AnalogIn_seriesZ->append(AnalogIn_numZ);
     }
     else if(index == 1)
     {
-        qDebug() << "MMA8452 window is active";
+        //qDebug() << "MMA8452 window is active";
         MPU9250_timer->stop();
         MMA8452_timer->start(0);
         AnalogIn_timer->stop();
         EnableDigitalIO();
+        AnalogIn_seriesX->append(AnalogIn_numX);
+        AnalogIn_seriesY->append(AnalogIn_numY);
+        AnalogIn_seriesZ->append(AnalogIn_numZ);
+
+        MPU9250_seriesX->clear();
+        MPU9250_seriesY->clear();
+        MPU9250_seriesZ->clear();
+        MPU9250_seriesYaw->clear();
+        MPU9250_seriesPitch->clear();
+        MPU9250_seriesRoll->clear();
+        MPU9250_seriesMx->clear();
+        MPU9250_seriesMy->clear();
+        MPU9250_seriesMz->clear();
     }
     else if(index == 2)
     {
-        qDebug() << "Analog inputs window is active";
+        //qDebug() << "Analog inputs window is active";
         MPU9250_timer->stop();
         MMA8452_timer->stop();
         AnalogIn_timer->start(0);
         EnableAnalogIn();
+        MMA8452_seriesX->clear();
+        MMA8452_seriesY->clear();
+        MMA8452_seriesZ->clear();
+
+        MPU9250_seriesX->clear();
+        MPU9250_seriesY->clear();
+        MPU9250_seriesZ->clear();
+        MPU9250_seriesYaw->clear();
+        MPU9250_seriesPitch->clear();
+        MPU9250_seriesRoll->clear();
+        MPU9250_seriesMx->clear();
+        MPU9250_seriesMy->clear();
+        MPU9250_seriesMz->clear();
     }
 }
+
 
 int main(int argc, char *argv[])
 {
