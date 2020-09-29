@@ -27,6 +27,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 #include <stdlib.h>     /* abs */
 #include <math.h>       /* fabs */
 #include "MPU9250.h"
+#include <QDebug>
+#include "GetErrName.h"
 #include "D:\Tools\Libraries\mcp2221\unmanaged_211\dll\mcp2221_dll_um.h"
 
 extern void *handle;
@@ -96,7 +98,7 @@ int MPU9250::begin(){
   // reset the MPU9250
   writeRegister(PWR_MGMNT_1,PWR_RESET);
   // wait for MPU-9250 to come back up
-  _sleep(1);
+  Sleep(1);
   // reset the AK8963
   writeAK8963Register(AK8963_CNTL2,AK8963_RESET);
   // select clock source to gyro
@@ -153,12 +155,12 @@ int MPU9250::begin(){
   if(writeAK8963Register(AK8963_CNTL1,AK8963_PWR_DOWN) < 0){
     return -15;
   }
-  _sleep(100); // long wait between AK8963 mode changes
+  Sleep(100); // long wait between AK8963 mode changes
   // set AK8963 to FUSE ROM access
   if(writeAK8963Register(AK8963_CNTL1,AK8963_FUSE_ROM) < 0){
     return -16;
   }
-  _sleep(100); // long wait between AK8963 mode changes
+  Sleep(100); // long wait between AK8963 mode changes
   // read the AK8963 ASA registers and compute magnetometer scale factors
   readAK8963Registers(AK8963_ASA,3,_buffer);
   _magScaleX = ((((float)_buffer[0]) - 128.0f)/(256.0f) + 1.0f) * 4912.0f / 32760.0f; // micro Tesla
@@ -168,12 +170,12 @@ int MPU9250::begin(){
   if(writeAK8963Register(AK8963_CNTL1,AK8963_PWR_DOWN) < 0){
     return -17;
   }
-  _sleep(100); // long wait between AK8963 mode changes  
+  Sleep(100); // long wait between AK8963 mode changes
   // set AK8963 to 16 bit resolution, 100 Hz update rate
   if(writeAK8963Register(AK8963_CNTL1,AK8963_CNT_MEAS2) < 0){
     return -18;
   }
-  _sleep(100); // long wait between AK8963 mode changes
+  Sleep(100); // long wait between AK8963 mode changes
   // select clock source to gyro
   if(writeRegister(PWR_MGMNT_1,CLOCK_SEL_PLL) < 0){
     return -19;
@@ -349,12 +351,12 @@ int MPU9250::setSrd(uint8_t srd) {
     if(writeAK8963Register(AK8963_CNTL1,AK8963_PWR_DOWN) < 0){
       return -2;
     }
-    _sleep(100); // long wait between AK8963 mode changes  
+    Sleep(100); // long wait between AK8963 mode changes
     // set AK8963 to 16 bit resolution, 8 Hz update rate
     if(writeAK8963Register(AK8963_CNTL1,AK8963_CNT_MEAS1) < 0){
       return -3;
     }
-    _sleep(100); // long wait between AK8963 mode changes     
+    Sleep(100); // long wait between AK8963 mode changes
     // instruct the MPU9250 to get 7 bytes of data from the AK8963 at the sample rate
     readAK8963Registers(AK8963_HXL,7,_buffer);
   } else {
@@ -362,12 +364,12 @@ int MPU9250::setSrd(uint8_t srd) {
     if(writeAK8963Register(AK8963_CNTL1,AK8963_PWR_DOWN) < 0){
       return -2;
     }
-    _sleep(100); // long wait between AK8963 mode changes  
+    Sleep(100); // long wait between AK8963 mode changes
     // set AK8963 to 16 bit resolution, 100 Hz update rate
     if(writeAK8963Register(AK8963_CNTL1,AK8963_CNT_MEAS2) < 0){
       return -3;
     }
-    _sleep(100); // long wait between AK8963 mode changes     
+    Sleep(100); // long wait between AK8963 mode changes
     // instruct the MPU9250 to get 7 bytes of data from the AK8963 at the sample rate
     readAK8963Registers(AK8963_HXL,7,_buffer);    
   } 
@@ -412,7 +414,7 @@ int MPU9250::enableWakeOnMotion(float womThresh_mg,LpAccelOdr odr) {
   // reset the MPU9250
   writeRegister(PWR_MGMNT_1,PWR_RESET);
   // wait for MPU-9250 to come back up
-  _sleep(1);
+  Sleep(1);
   if(writeRegister(PWR_MGMNT_1,0x00) < 0){ // cycle 0, sleep 0, standby 0
     return -1;
   } 
@@ -679,7 +681,7 @@ int MPU9250::calibrateGyro() {
     _gxbD += (getGyroX_rads() + _gxb)/((double)_numSamples);
     _gybD += (getGyroY_rads() + _gyb)/((double)_numSamples);
     _gzbD += (getGyroZ_rads() + _gzb)/((double)_numSamples);
-    _sleep(20);
+    Sleep(20);
   }
   _gxb = (float)_gxbD;
   _gyb = (float)_gybD;
@@ -752,7 +754,7 @@ int MPU9250::calibrateAccel() {
     _axbD += (getAccelX_mss()/_axs + _axb)/((double)_numSamples);
     _aybD += (getAccelY_mss()/_ays + _ayb)/((double)_numSamples);
     _azbD += (getAccelZ_mss()/_azs + _azb)/((double)_numSamples);
-    _sleep(20);
+    Sleep(20);
   }
   if (_axbD > 9.0f) {
     _axmax = (float)_axbD;
@@ -921,7 +923,7 @@ int MPU9250::calibrateMag() {
     } else {
       _counter++;
     }
-    _sleep(20);
+    Sleep(20);
   }
 
   // find the magnetometer bias
@@ -1017,10 +1019,13 @@ int MPU9250::writeRegister(uint8_t subAddress, uint8_t data){
 	//int flag = Mcp2221_I2cWrite(handle, sizeof(subAddress), MPU9250_I2C_ADDR, I2cAddr7bit, &subAddress);
 	//flag = Mcp2221_I2cWrite(handle, sizeof(data), MPU9250_I2C_ADDR, I2cAddr7bit, &data);
 	int flag = Mcp2221_I2cWrite(handle, sizeof(TxDataTemp), MPU9250_I2C_ADDR, I2cAddr7bit, TxDataTemp);
-	if (flag != 0) printf("Error Writing to MPU9250 %d\n", flag);
+    if (flag != 0)
+    {
+        //qDebug("Error Writing to MPU9250 %d\n", flag);
+    }
   }
 
-  _sleep(10);
+  Sleep(10);
   
   /* read back the register */
   readRegisters(subAddress,1,_buffer);
@@ -1029,7 +1034,7 @@ int MPU9250::writeRegister(uint8_t subAddress, uint8_t data){
     return 1;
   }
   else{
-    return -1;
+    //return -1;
   }
 }
 
@@ -1059,14 +1064,17 @@ int MPU9250::readRegisters(uint8_t subAddress, uint8_t count, uint8_t* dest){
     _numBytes = _i2c->requestFrom(_address, count); // specify the number of bytes to receive*/
 
 	int flag = Mcp2221_I2cWrite(handle, sizeof(subAddress), MPU9250_I2C_ADDR, I2cAddr7bit, &subAddress);
-	if (flag != 0) printf("Error writing to MPU9250: %d\n", flag);
+    if (flag < 0)
+    {
+        //qDebug("Error writing to MPU9250: %d, %s\n", flag, Mcp2221_GetErrorName(flag));
+    }
 	//flag ? printf("Error writing to MPU9250: %d\n", flag): printf("No error writing to MPU9250: %d\n", flag);
 
 	flag = Mcp2221_I2cRead(handle, count, MPU9250_I2C_ADDR, I2cAddr7bit, dest);
-	if (flag != 0)
+    if (flag < 0)
 	{
-		printf("Error reading from MPU9250: %d\n", flag);
-		return -1;
+        //qDebug("Error reading from MPU9250: %d, %s\n", flag, Mcp2221_GetErrorName(flag));
+        //return -1;
 	}
 
     /*if (_numBytes == count) {
@@ -1080,6 +1088,7 @@ int MPU9250::readRegisters(uint8_t subAddress, uint8_t count, uint8_t* dest){
 	else {
       return -1;
     }*/
+    return 1;
   }
 }
 
@@ -1126,7 +1135,7 @@ int MPU9250::readAK8963Registers(uint8_t subAddress, uint8_t count, uint8_t* des
 	if (writeRegister(I2C_SLV0_CTRL,I2C_SLV0_EN | count) < 0) {
     return -3;
   }
-	_sleep(1); // takes some time for these registers to fill
+    Sleep(1); // takes some time for these registers to fill
   // read the bytes off the MPU9250 EXT_SENS_DATA registers
 	_status = readRegisters(EXT_SENS_DATA_00,count,dest); 
   return _status;
@@ -1136,11 +1145,11 @@ int MPU9250::readAK8963Registers(uint8_t subAddress, uint8_t count, uint8_t* des
 int MPU9250::whoAmI(){
   // read the WHO AM I register
   if (readRegisters(WHO_AM_I,1,_buffer) < 0) {
-	  printf("WHO_AM_I Error 0x%X\n", _buffer[0]);
+      //qDebug("WHO_AM_I Error 0x%X\n", _buffer[0]);
     return -1;
   }
   // return the register value
-  printf("WHO_AM_I: 0x%X\n", _buffer[0]);
+  //qDebug("WHO_AM_I: 0x%X\n", _buffer[0]);
   return _buffer[0];
 }
 
