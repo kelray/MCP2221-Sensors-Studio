@@ -7,10 +7,9 @@ This project is basically a collection of MCP2221 projects, I have created in th
 
 The project requires the following tools and libraries in order to compile and build:
 - Qt framework (version 15.5.0 is the one I used for this project), with MingW C/C++ compiler. Visual Studio can be used as a replacement.
-- QMapControl Qt maps library: https://github.com/kaiwinter/QMapControl
-
-Note: make sure to compile QMapControl with MingW in order to use the output .lib files with this project, the output .lib  didn't work with this project when compiled with Visual Studio.
+- MapGraphics, a C++ maps Library: https://github.com/raptorswing/MapGraphics
 - Microchip MCP2221 library and DLL for Windows OS (included in the project files).
+Worth noting that the maps library used in this project differs from the one used in "Qt Geolocator" project back from 2018. In this project, MapGraphics has been used since it showed faster response in testing.
 
 I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers for the MCP2221 are mostly derived from them: 
 - MPU9250 library: https://github.com/bolderflight/MPU9250
@@ -21,7 +20,7 @@ If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials ca
 - MCP2221 Tutorial - I2C Interfacing made easy: http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
 - MCP2221 Tutorial - USB interfacing made easy: http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
 
-**If you don't want to re-compile the project**, Windows executable and DLLs are available in "Binaries_release.zip" file, just download, unzip it and it's ready to run.
+**If you don't want to re-compile the project**, Windows executable and DLLs are available in a zipped file. Download and unzip it, and the exectutable is ready to run.
 
 **MMA8452Q module (picture from SparkFun):**
 
