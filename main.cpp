@@ -963,6 +963,10 @@ void MainWindow::ActiveTabs(int index)
     if(index == 0)
     {
         //qDebug() << "MPU9250 window is active";
+<<<<<<< HEAD
+=======
+        //IMU.begin();
+>>>>>>> 303120a2d3f6b1410dd71a9e39911e837ab71c09
         MPU9250_timer->start(5);
         MMA8452_timer->stop();
         AnalogIn_timer->stop();
@@ -1018,6 +1022,7 @@ void MainWindow::ActiveTabs(int index)
         MPU9250_seriesMz->clear();
     }
 }
+
 
 int main(int argc, char *argv[])
 {
