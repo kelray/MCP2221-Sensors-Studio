@@ -9,6 +9,7 @@ The project requires the following tools and libraries in order to compile and b
 - Qt framework (version 15.5.0 is the one I used for this project), with MingW C/C++ compiler. Visual Studio can be used as a replacement.
 - MapGraphics, a C++ maps Library: https://github.com/raptorswing/MapGraphics
 - Microchip MCP2221 library and DLL for Windows OS (included in the project files).
+
 Worth noting that the maps library used in this project differs from the one used in "Qt Geolocator" project back from 2018. In this project, MapGraphics has been used since it showed faster response in testing.
 
 I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers for the MCP2221 are mostly derived from them: 
