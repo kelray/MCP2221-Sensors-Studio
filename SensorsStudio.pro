@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets charts multimedia testlib location positioning serialport network
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets charts multimedia testlib location positioning serialport sql
 
 CONFIG += c++11
 
@@ -36,13 +36,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += "C:/QMapControl/QMapControl-develop/debug/include"
+#Change paths as necessary
+INCLUDEPATH += "C:\MapGraphics\MapGraphics"
 
-#win32: LIBS = "C:\\QMapControl\\QMapControl-develop\\debug\\lib\\qmapcontrold1.lib"\
-
-win32: LIBS = "C:\\SensorsStudio\\mcp2221_dll_um_x86.lib"\
-              "C:\\QMapControl\\QMapControl-develop-mingw\\build-QMapControl-Desktop_Qt_5_14_1_MinGW_32_bit-Debug\\src\\QMapControl\\lib\\libqmapcontrold1.a"\
-                
-DISTFILES += \    
-    C:/QMapControl/QMapControl-develop-mingw/build-QMapControl-Desktop_Qt_5_14_1_MinGW_32_bit-Debug/src/QMapControl/lib/qmapcontrold1.dll\
-    
+#Linkage for MapGraphics shared library
+win32:CONFIG(release, debug|release): LIBS += "C:\\SensorsStudio\\libmapgraphics\\libMapGraphics.a"\
+                                              "C:\\SensorsStudio\\mcp2221_dll_um_x86.lib"
+else:win32:CONFIG(debug, debug|release): LIBS += "C:\\SensorsStudio\\libmapgraphicsd\\libMapGraphics.a"\
+                                                 "C:\\SensorsStudio\\mcp2221_dll_um_x86.lib"

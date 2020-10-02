@@ -1,5 +1,8 @@
-//QMapControl libraries must be compiled and built with the same compiler as this app
-//otherwise error will occur when compiling the app
+/*
+* Project: MCP2221 Sensors Studio 
+* File: main.cpp
+*/
+
 #include "mainwindow.h"
 #include <QApplication>
 #include <QCheckBox>
@@ -53,10 +56,17 @@
 #include "GetErrName.h"
 #include "MPU9250.h"
 #include "mcp2221_dll_um.h"
-#include "QMapControl/QMapControl.h"
-#include "QMapControl/LayerMapAdapter.h"
-#include "QMapControl/MapAdapterOSM.h"
+#include "MapGraphicsView.h"
+#include "MapGraphicsScene.h"
+#include "tileSources/GridTileSource.h"
+#include "tileSources/OSMTileSource.h"
+#include "tileSources/CompositeTileSource.h"
+#include "guts/CompositeTileSourceConfigurationWidget.h"
+#include "CircleObject.h"
+#include "PolygonObject.h"
 
+#define I2cAddr7bit 1
+#define I2cAddr8bit 0
 //Global variables
 void *handle;
 QString error_string;
@@ -70,7 +80,6 @@ wchar_t ProdDescrip[30];
 int ver = 0;
 int error = 0;
 int flag = 0;
-
 unsigned int delay = 0;
 unsigned int ReqCurrent;
 unsigned int PID = 0xDD;
@@ -86,8 +95,6 @@ unsigned int ADCbuffer[3];
 unsigned char DacVal = 0;
 unsigned int ADCreading = 0;
 unsigned int NegativeFlag = 0;
-#define I2cAddr7bit 1
-#define I2cAddr8bit 0
 
 //File logging variables
 FILE * logFile;		//Create file to save temperature log
@@ -188,23 +195,23 @@ QTimer *MPU9250_timer;
 
 //Neo-6 GPS
 using namespace std;
-using namespace qmapcontrol;
 QGeoPositionInfo* location;
 QDateTime timestamp;
 QNmeaPositionInfoSource* GPSdevice;
 QSerialPort* serial;
 QGeoServiceProvider* ServiceProvider;
-QMapControl* m_map_control;
 QComboBox *serial_droplist;
-double longitude = 0.0;
-double latitude = 0.0;
-double altitude = 0.0;
-std::vector<PointWorldCoord> points;
+qreal longitude = 0.0;
+qreal latitude = 0.0;
+qreal altitude = 0.0;
 QGeoCoordinate Coordinate(latitude, longitude);
+QGeoCoordinate Coordin2(49, -122);
 QTextEdit *Neo6GPS_TextBox;
+//MapGraphics
+MapGraphicsView *view;
+MapGraphicsScene *scene;
 
 //Analog inputs variables
-//checkboxes
 QCheckBox *AnalogIn_AN0chkBx;
 QCheckBox *AnalogIn_AN1chkBx;
 QCheckBox *AnalogIn_AN2chkBx;
@@ -253,6 +260,7 @@ void Mcp2221_config()
     {
         error_string = "No MCP2221 devices connected";
         MMA8452_TextBox->append(error_string);
+        //exit(0);
     }
     else
     {
@@ -339,15 +347,6 @@ void Mcp2221_config()
         error_string = "Error setting I2C advanced settings:"+ QString::number(flag);
         MMA8452_TextBox->append(error_string);
     }
-
-    //Set GPIO
-    /*flag = Mcp2221_SetGpioSettings(handle, RUNTIME_SETTINGS, pinFunc, pinDir, OutValues);
-    if(flag != 0)
-    {
-        //printf("Error setting GPIO, error: %d\n", flag);
-        error_string = "Error setting GPIO, error: "+ QString::number(flag);
-        MMA8452_TextBox->append(error_string);
-    }*/
 }
 
 void MMA8452_Config()
@@ -401,6 +400,7 @@ void MMA8452_Config()
 
     // Select configuration register(0x0E)
     // Set range to +/- 2g(0x00)
+    //config[0] = 0x0E;
     config[0] = MMA8452_XYZ_CFG_REG;
     config[1] = 0x00;	//2g:0x00, 4g: 0x01, 8g: 0x02
 
@@ -485,7 +485,7 @@ void MainWindow::MMA8452_updateChart()
     MMA8452_numY.setY(MMA8452_IMUval[1]);
     MMA8452_numZ.setX(counter);
     MMA8452_numZ.setY(MMA8452_IMUval[2]);
-
+	
     MMA8452_seriesX->append(MMA8452_numX);
     MMA8452_seriesY->append(MMA8452_numY);
     MMA8452_seriesZ->append(MMA8452_numZ);
@@ -534,7 +534,6 @@ void MainWindow::MMA8452_DropBoxCallback(int index)
     flag = Mcp2221_I2cWrite(handle, sizeof(config), MMA8452_I2C_ADDR, I2cAddr7bit, config);    //issue start condition then address
     if(flag == 0)
     {
-        //error_string = "Setting MMA8452 range to: " + QString::number(MMA8452_I2C_ADDR);
         MMA8452_TextBox->append(error_string);
     }
     else
@@ -585,18 +584,23 @@ void MainWindow::MMA8452_ChkBxCallback(int index)
 
 void MainWindow::ConnectToCOM()
 {
+    GPSdevice->stopUpdates();
+    serial->clear(QSerialPort::AllDirections);
     serial->setPortName(serial_droplist->currentText());
-    serial->setBaudRate(QSerialPort::Baud9600);
-    serial->setDataBits(QSerialPort::Data8);
-    serial->setParity(QSerialPort::NoParity);
-    serial->setStopBits(QSerialPort::OneStop);
-    serial->setFlowControl(QSerialPort::NoFlowControl);
-    serial->open(QIODevice::ReadWrite);
-    GPSdevice->setDevice(serial);
+    qDebug() << "Connecting to port: " << serial->portName();
+    GPSdevice->startUpdates();
+    qDebug() << "GPS device setup completed.";
 }
 
 void MainWindow::GetGPSinfo()
 {
+    qDebug() << "Latitude: " << GPSdevice->lastKnownPosition(true).coordinate().latitude();     //Parsing GPS data using QNmeaPositionInfoSource
+    qDebug() << "Longitude: " << GPSdevice->lastKnownPosition(true).coordinate().longitude();
+    qDebug() << "Altitude: " <<  GPSdevice->lastKnownPosition(true).coordinate().altitude();
+    qDebug() << "Time: " << GPSdevice->lastKnownPosition(true).timestamp().toString();//.currentDateTime().toString();
+    qDebug() << "Distance to " << Coordin2.latitude() << ", " << Coordin2.longitude() << ": "
+             << GPSdevice->lastKnownPosition(true).coordinate().distanceTo(Coordin2);
+
     error_string = "Latitude: " + QString::number(GPSdevice->lastKnownPosition(true).coordinate().latitude());
     Neo6GPS_TextBox->append(error_string);
     error_string = "Longitude: " + QString::number(GPSdevice->lastKnownPosition(true).coordinate().longitude());
@@ -608,12 +612,14 @@ void MainWindow::GetGPSinfo()
 
     latitude = GPSdevice->lastKnownPosition(true).coordinate().latitude();
     longitude = GPSdevice->lastKnownPosition(true).coordinate().longitude();
-    points.emplace_back(longitude, latitude);
-    m_map_control->setMapFocusPoint(points, true);
-
     Coordinate.setLatitude(latitude);
     Coordinate.setLongitude(longitude);
     timestamp = QDateTime::fromString(GPSdevice->lastKnownPosition(true).timestamp().toString());
+    location->setCoordinate(Coordinate);
+	
+	//View data on the map and zoom in
+    view->setZoomLevel(17);
+    view->centerOn(longitude, latitude);
 }
 
 //Digital output control checkbox
@@ -855,12 +861,12 @@ void MainWindow::AnalogIn_ChkBxCallback(int index)
 void MainWindow::AnalogIn_updateChart()
 {
     flag = Mcp2221_GetAdcData(handle, ADCbuffer);
-
     AnalogIn_voltage[0] = (float)ADCbuffer[0]*(Vref/1023.0);
     AnalogIn_voltage[1] = (float)ADCbuffer[1]*(Vref/1023.0);
     AnalogIn_voltage[2] = (float)ADCbuffer[2]*(Vref/1023.0);
     AIN_counter++;
-    if(AIN_counter == AnalogIn_x1RangeMax)
+    
+	if(AIN_counter == AnalogIn_x1RangeMax)
     {
         AIN_counter = 0;
         AnalogIn_seriesX->clear();
@@ -956,27 +962,60 @@ void MainWindow::ActiveTabs(int index)
 {
     if(index == 0)
     {
-        qDebug() << "MPU9250 window is active";
-        MPU9250_timer->start(0);
+        //qDebug() << "MPU9250 window is active";
+        MPU9250_timer->start(5);
         MMA8452_timer->stop();
         AnalogIn_timer->stop();
         EnableDigitalIO();
+        MMA8452_seriesX->clear();
+        MMA8452_seriesY->clear();
+        MMA8452_seriesZ->clear();
+
+        AnalogIn_seriesX->append(AnalogIn_numX);
+        AnalogIn_seriesY->append(AnalogIn_numY);
+        AnalogIn_seriesZ->append(AnalogIn_numZ);
     }
     else if(index == 1)
     {
-        qDebug() << "MMA8452 window is active";
+        //qDebug() << "MMA8452 window is active";
         MPU9250_timer->stop();
         MMA8452_timer->start(0);
         AnalogIn_timer->stop();
         EnableDigitalIO();
+        AnalogIn_seriesX->append(AnalogIn_numX);
+        AnalogIn_seriesY->append(AnalogIn_numY);
+        AnalogIn_seriesZ->append(AnalogIn_numZ);
+
+        MPU9250_seriesX->clear();
+        MPU9250_seriesY->clear();
+        MPU9250_seriesZ->clear();
+        MPU9250_seriesYaw->clear();
+        MPU9250_seriesPitch->clear();
+        MPU9250_seriesRoll->clear();
+        MPU9250_seriesMx->clear();
+        MPU9250_seriesMy->clear();
+        MPU9250_seriesMz->clear();
     }
     else if(index == 2)
     {
-        qDebug() << "Analog inputs window is active";
+        //qDebug() << "Analog inputs window is active";
         MPU9250_timer->stop();
         MMA8452_timer->stop();
         AnalogIn_timer->start(0);
         EnableAnalogIn();
+        MMA8452_seriesX->clear();
+        MMA8452_seriesY->clear();
+        MMA8452_seriesZ->clear();
+
+        MPU9250_seriesX->clear();
+        MPU9250_seriesY->clear();
+        MPU9250_seriesZ->clear();
+        MPU9250_seriesYaw->clear();
+        MPU9250_seriesPitch->clear();
+        MPU9250_seriesRoll->clear();
+        MPU9250_seriesMx->clear();
+        MPU9250_seriesMy->clear();
+        MPU9250_seriesMz->clear();
     }
 }
 
@@ -998,6 +1037,7 @@ int main(int argc, char *argv[])
 
     QMenu* FileMenu = new QMenu("File");
     QMenu* HelpMenu = new QMenu("Help");
+    //QMenu* AboutMenu = new QMenu("About");
 
     //add menus to the menu bar
     menu->setFixedSize(200, 30);
@@ -1122,7 +1162,7 @@ int main(int argc, char *argv[])
     MMA8452_axisY1->setRange(MMA8452_y1RangeMin, MMA8452_y1RangeMax);
     MMA8452_axisY1->setTitleText("Acceleration (g)");
 
-    //Add series to Accelerometer char
+    //Replacement - Add series to Accelerometer char
     MMA8452_chartAcc->addAxis(MMA8452_axisX1, Qt::AlignBottom);
     MMA8452_chartAcc->addAxis(MMA8452_axisY1, Qt::AlignLeft);
     MMA8452_chartAcc->addSeries(MMA8452_seriesX);
@@ -1145,7 +1185,8 @@ int main(int argc, char *argv[])
     //plotting timer and connect it to real-time slot
     MMA8452_timer = new QTimer(&w);
     QObject::connect(MMA8452_timer, SIGNAL(timeout()), &w, SLOT(MMA8452_updateChart()));
-    /*******************************************************************************************/
+    
+	/*******************************************************************************************/
     //MPU9250 Widgets and charts
     //Create line series for aX,aY,aZ
     MPU9250_seriesX = new QLineSeries();
@@ -1160,6 +1201,7 @@ int main(int argc, char *argv[])
 
     //Accelerometer Chart
     MPU9250_chartAcc = new QChart();
+    //MPU9250_chartAcc->setGeometry(15, 15, 620, 450);
     MPU9250_chartAcc->legend()->show();
 
     //Acelerometer char axes
@@ -1183,7 +1225,6 @@ int main(int argc, char *argv[])
     MPU9250_seriesZ->attachAxis(MPU9250_axisXAcc);
     MPU9250_seriesZ->attachAxis(MPU9250_axisYAcc);
 
-    //MPU9250_chartAcc->createDefaultAxes();         //comment this line for dynamic axes
     MPU9250_chartAcc->setTitle("MPU9250 Accelerometer Reading");
     MPU9250_chartAcc->setPlotAreaBackgroundVisible(true);
     MPU9250_chartAcc->setBackgroundVisible(false);
@@ -1191,6 +1232,7 @@ int main(int argc, char *argv[])
     //Create Accelerometer Chart View Widget
     MPU9250_chartViewAcc = new QChartView(MPU9250_chartAcc, MPU9250_Tab1);
     MPU9250_chartViewAcc->setGeometry(15, 15, 620, 450);
+
     /********************************************************************/
     //MPU9250 Gyroscope chart
     //Create line series for gX,gY,gZ
@@ -1213,7 +1255,6 @@ int main(int argc, char *argv[])
     MPU9250_axisXGyro->setRange(MPU9250_x1RangeMin, MPU9250_x1RangeMax);
     MPU9250_axisXGyro->setTitleText("Time");
 
-    //QValueAxis *axisY1 = new QValueAxis;
     MPU9250_axisYGyro = new QValueAxis;
     MPU9250_axisYGyro->setRange(MPU9250_yGyroRangeMin, MPU9250_yGyroRangeMax);
     MPU9250_axisYGyro->setTitleText("Gyration (°/sec)");
@@ -1240,6 +1281,7 @@ int main(int argc, char *argv[])
     MPU9250_chartViewGyro = new QChartView(MPU9250_chartGyro, MPU9250_Tab1);
     MPU9250_chartViewGyro->setGeometry(650, 15, 620, 450);
     /*********************************************************************************/
+	
     //Create line series for aX,aY,aZ
     MPU9250_seriesMx = new QLineSeries();
     MPU9250_seriesMx->setName("Mag. X");
@@ -1276,6 +1318,7 @@ int main(int argc, char *argv[])
     MPU9250_seriesMz->attachAxis(MPU9250_axisXMagneto);
     MPU9250_seriesMz->attachAxis(MPU9250_axisYMagneto);
 
+    //MPU9250_chartMagneto->createDefaultAxes();
     MPU9250_chartMagneto->setTitle("MPU9250 Magnetometer Reading");
     MPU9250_chartMagneto->setPlotAreaBackgroundVisible(true);
     MPU9250_chartMagneto->setBackgroundVisible(false);
@@ -1308,6 +1351,7 @@ int main(int argc, char *argv[])
     MPU9250_GPIO3chkBx->setGeometry(410, 575, 100, 20);
     MPU9250_SaveTofilechkbx = new QCheckBox("Save Data to File", MPU9250_Tab1);
     MPU9250_SaveTofilechkbx->setGeometry(410, 605, 100, 20);
+	
     /********************************************************************/
     //MPU9250 Accelerometer fullscale range
     QLabel *MPU9250_AccRangeLabel = new QLabel(MPU9250_Tab1);
@@ -1340,7 +1384,7 @@ int main(int argc, char *argv[])
     QObject::connect(MPU9250_timer, SIGNAL(timeout()), &w, SLOT(MPU9250_updateChart()));
     /************************************************************************************************/
     //GPS widgets
-    //Label 1 - MCP2221 info
+    //Label
     QLabel *Neo6GPS_Label1 = new QLabel(MMA8452_Tab2);
     Neo6GPS_Label1->setGeometry(700, 670, 150, 25);
     Neo6GPS_Label1->setText("Location Information");
@@ -1350,10 +1394,12 @@ int main(int argc, char *argv[])
     Neo6GPS_TextBox->acceptRichText();
     Neo6GPS_TextBox->setAcceptRichText(true);
 
+	//Read GPS data push button
     QPushButton *GPS_Button = new QPushButton(MMA8452_Tab2);
     GPS_Button->setGeometry(1100, 800, 100, 35);
     GPS_Button->setText("Read GPS");
 
+	//Connect to GPS push button
     QPushButton *GPS_ConnectButton = new QPushButton(MMA8452_Tab2);
     GPS_ConnectButton->setGeometry(1100, 750, 100, 35);
     GPS_ConnectButton->setText("Connect");
@@ -1368,12 +1414,16 @@ int main(int argc, char *argv[])
     {
         serial_droplist->addItem(info.portName());
     }
-    m_map_control = new QMapControl(QSizeF(480.0, 640.0), MMA8452_Tab2);
-    m_map_control->setGeometry(700, 30, 480, 640);
+	
+    //Setup the MapGraphics scene and view
+    scene = new MapGraphicsScene(MMA8452_Tab2);
+    view = new MapGraphicsView(scene, MMA8452_Tab2);
+    view->setGeometry(700, 30, 480, 640);
+    //Setup some tile sources
+    QSharedPointer<OSMTileSource> osmTiles(new OSMTileSource(OSMTileSource::OSMTiles), &QObject::deleteLater);
+    view->setTileSource(osmTiles);
 
-    // Create/add a layer with the default OSM map adapter.
-    m_map_control->addLayer(std::make_shared<LayerMapAdapter>("Custom Layer", std::make_shared<MapAdapterOSM>()));
-
+    //serial = new QSerialPort(Neo6GPS_Tab3);
     serial = new QSerialPort(MMA8452_Tab2);
     serial->setPortName(serial_droplist->currentText());
     serial->setBaudRate(QSerialPort::Baud9600);
@@ -1404,6 +1454,7 @@ int main(int argc, char *argv[])
     AnalogIn_Label1->setText("Analog Reading");
 
     //AnalogIn_TextBox for device information and analog readings
+    //QTextEdit *AnalogIn_TextBox = new QTextEdit(AnalogIn_Tab3);   //avoid redefine if declared globally
     AnalogIn_TextBox = new QTextEdit(AnalogIn_Tab3);
     AnalogIn_TextBox->setGeometry(15, 575, 380, 150);
     AnalogIn_TextBox->acceptRichText();
@@ -1469,10 +1520,11 @@ int main(int argc, char *argv[])
     //plotting timer and connect it to real-time slot
     AnalogIn_timer = new QTimer(&w);
     QObject::connect(AnalogIn_timer, SIGNAL(timeout()), &w, SLOT(AnalogIn_updateChart()));
+
     /****************************************************************************/
     Mcp2221_config();        //Configure any connected MCP2221
-    MMA8452_Config();
     int status = IMU.begin();       //start communication with MPU9250
+    MMA8452_Config();
 
     w.show();
     QObject::connect(MMA8452_RangeDropList, SIGNAL(currentIndexChanged(int)), &w, SLOT(MMA8452_DropBoxCallback(int)));
@@ -1514,5 +1566,6 @@ int main(int argc, char *argv[])
     QObject::connect(AnalogIn_AN1chkBx, SIGNAL(stateChanged(int)), AnalogIn_CheckBoxSignalMapper, SLOT(map()));
     QObject::connect(AnalogIn_AN2chkBx, SIGNAL(stateChanged(int)), AnalogIn_CheckBoxSignalMapper, SLOT(map()));
     QObject::connect(AnalogIn_SaveTofilechkbx, SIGNAL(stateChanged(int)), AnalogIn_CheckBoxSignalMapper, SLOT(map()));
+
     return a.exec();
 }
