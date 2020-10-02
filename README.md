@@ -20,7 +20,7 @@ If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials ca
 - MCP2221 Tutorial - I2C Interfacing made easy: http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
 - MCP2221 Tutorial - USB interfacing made easy: http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
 
-**If you don't want to re-compile the project**, Windows executable and DLLs are available in a zipped file. Download and unzip it, and the exectutable is ready to run.
+**If you don't want to re-compile the project**, Windows executable and DLLs are available in "build-SensorsStudio-Desktop_Qt_5_15_0_MinGW_32_bit-Release.zip". Download and unzip it, and the exectutable will be ready to run.
 
 **MMA8452Q module (picture from SparkFun):**
 
