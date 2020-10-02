@@ -1,5 +1,5 @@
 # MCP2221 Sensors Studio
-The MCP2221 Sensors studio is a desktop app that acquires data from analog inputs, MMA8452Q 3-Axes accelerometer, MPU9250 9 DOF IMU and uBlox Neo-6 GPS module via MCP2221 USB-to-UART/I2C bridge chip. The main purpose of the project is to have an "Easy-to-use" technology demonstrator for educators and hobbyists who want to learn about different motion and/or location sensors.
+The MCP2221 Sensors studio is a desktop app that acquires data from analog inputs, MMA8452Q 3-Axes accelerometer, MPU9250 9-DOF IMU and uBlox Neo-6 GPS module via MCP2221 USB-to-UART/I2C bridge chip. The main purpose of the project is to have an "Easy-to-use" technology demonstrator for educators and hobbyists who want to learn about different motion and/or location sensors.
 This project is basically a collection of MCP2221 projects I have created in the past, all combined together. These are the original projects:
 - Qt Geolocator (uBlox Neo-6 GPS interface with MCP2221): : https://github.com/kelray/Qt-Geolocator
 - MPU9250 9DOF IMU USB Viewer: https://github.com/kelray/USB-9-DOF-IMU-Viewer
@@ -10,7 +10,9 @@ The project requires the following tools and libraries in order to compile and b
 - MapGraphics, a C++ maps Library: https://github.com/raptorswing/MapGraphics
 - Microchip MCP2221 library and DLL for Windows OS (included in the project files).
 
-Worth noting that the maps library used in this project differs from the one used in "Qt Geolocator" project back from 2018. In this project, MapGraphics has been used since it showed faster response in testing.
+**Worth noting:**
+- The maps library used in this project differs from the one used in "Qt Geolocator" project back from 2018. In this project, MapGraphics has been used since it showed faster response in testing.
+- The app works with MPU6050 6-DOF IMU since it shares with the MPU9250 the same registers set for the accelerometer and gyroscope, and of course the magnetometer data is gibberish since it doesn't have one. The full-scale ranges are different as well, yet the app is capable of collecting acceleration and gyration data.
 
 I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers for the MCP2221 are mostly derived from them: 
 - MPU9250 library: https://github.com/bolderflight/MPU9250
