@@ -1,4 +1,4 @@
-# MCP2221 Sensors Studio (Beta version)
+# MCP2221 Sensors Studio:
 The MCP2221 Sensors studio is a desktop app that interfaces with MCP2221 analog inputs, MMA8452Q 3-Axis accelerometer, MPU9250 9 DOF IMU, and uBlox Neo-6 GPS module. The main purpose of the project is to have an "Easy-to-use technology demonstrator" for educators and hobbyists who want to learn about different motion/location sensors.
 This project is basically a collection of MCP2221 projects, I have created in the past, all combined together, these are the original projects:
 - Qt Geolocator (uBlox Neo-6 GPS interface with MCP2221): : https://github.com/kelray/Qt-Geolocator
@@ -47,3 +47,34 @@ If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials ca
 **Analog Inputs Tab:**
 
 <p align="center"> <img width="676" alt="Sensors studio v22_3" src="https://user-images.githubusercontent.com/8460504/94200569-74a4be00-fe6f-11ea-98c4-ad58e0333d5c.png">
+  
+**License:**
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+ EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ The views and conclusions contained in the software and documentation are
+ those of the author and should not be interpreted as representing official
+ policies, either expressed or implied, by the author.
+ 
+Please let me know if you notice any errors or problems with the source code.
+
+**Disclaimer: Cannot be used for any life-critical application, use it at your own risk.**
