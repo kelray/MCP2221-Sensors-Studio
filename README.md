@@ -1,6 +1,6 @@
 # MCP2221 Sensors Studio
-The MCP2221 Sensors studio is a desktop app that interfaces with the MCP2221 chip analog inputs, MMA8452Q 3-Axes accelerometer, MPU9250 9 DOF IMU (both connected to the MCP2221 I2C) and uBlox Neo-6 GPS module (connected to MCP2221 UART). The main purpose of the project is to have an "Easy-to-use technology demonstrator" for educators and hobbyists who want to learn about different motion/location sensors.
-This project is basically a collection of MCP2221 projects, I have created in the past, all combined together, these are the original projects:
+The MCP2221 Sensors studio is a desktop app that acquires data from analog inputs, MMA8452Q 3-Axes accelerometer, MPU9250 9 DOF IMU and uBlox Neo-6 GPS module via MCP2221 USB-to-UART/I2C bridge chip. The main purpose of the project is to have an "Easy-to-use" technology demonstrator for educators and hobbyists who want to learn about different motion and/or location sensors.
+This project is basically a collection of MCP2221 projects I have created in the past, all combined together. These are the original projects:
 - Qt Geolocator (uBlox Neo-6 GPS interface with MCP2221): : https://github.com/kelray/Qt-Geolocator
 - MPU9250 9DOF IMU USB Viewer: https://github.com/kelray/USB-9-DOF-IMU-Viewer
 - USB 3D Accelerometer Viewer: https://github.com/kelray/USB-3D-Accelerometer-Viewer
@@ -18,8 +18,10 @@ I would like to credit the following libraries, the MMA8452Q and MPU9250 drivers
 - Arduino and MMA8452 sensor example: http://arduinolearning.com/code/arduino-and-mma8452-sensor-example.php
 
 If you are new to the MCP2221 USB to UART/I2C bridge, the following tutorials can be your starting point:
-- MCP2221 Tutorial - I2C Interfacing made easy: http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
-- MCP2221 Tutorial - USB interfacing made easy: http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
+- MCP2221 Tutorial - I2C Interfacing made easy: 
+http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.html
+- MCP2221 Tutorial - USB interfacing made easy: 
+http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
 
 **If you don't want to re-compile the project**, Windows executable and DLLs are available in "build-SensorsStudioV2-Desktop_Qt_5_15_0_MinGW_32_bit-Release.zip". Download and unzip it, and the exectutable will be ready to run.
 
