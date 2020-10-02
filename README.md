@@ -1,5 +1,5 @@
 # MCP2221 Sensors Studio
-The MCP2221 Sensors studio is a desktop app that interfaces with MCP2221 analog inputs, MMA8452Q 3-Axis accelerometer, MPU9250 9 DOF IMU, and uBlox Neo-6 GPS module. The main purpose of the project is to have an "Easy-to-use technology demonstrator" for educators and hobbyists who want to learn about different motion/location sensors.
+The MCP2221 Sensors studio is a desktop app that interfaces with the MCP2221 chip analog inputs, MMA8452Q 3-Axis accelerometer, MPU9250 9 DOF IMU (both connected to the MCP2221 I2C) and uBlox Neo-6 GPS module (connected to MCP2221 UART). The main purpose of the project is to have an "Easy-to-use technology demonstrator" for educators and hobbyists who want to learn about different motion/location sensors.
 This project is basically a collection of MCP2221 projects, I have created in the past, all combined together, these are the original projects:
 - Qt Geolocator (uBlox Neo-6 GPS interface with MCP2221): : https://github.com/kelray/Qt-Geolocator
 - MPU9250 9DOF IMU USB Viewer: https://github.com/kelray/USB-9-DOF-IMU-Viewer
