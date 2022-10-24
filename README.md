@@ -25,7 +25,7 @@ http://elrayescampaign.blogspot.com/2018/06/mcp2221-i2c-interfacing-tutorial.htm
 - MCP2221 Tutorial - USB interfacing made easy: 
 http://elrayescampaign.blogspot.com/2016/06/mcp2221-tutorial-easy-usb-interfacing.html
 
-**If you don't want to re-compile the project**, Windows executable and DLLs are available in "build-SensorsStudioV2-Desktop_Qt_5_15_0_MinGW_32_bit-Release.zip". Download and unzip it, and the exectutable will be ready to run.
+**If you don't want to re-compile the project**, Windows executable and DLLs are available under "Executables/release" directory. It should run right away.
 
 **MMA8452Q module (picture from SparkFun):**
 
